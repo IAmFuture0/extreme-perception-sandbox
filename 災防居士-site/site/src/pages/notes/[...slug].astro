@@ -1,0 +1,40 @@
+---
+import Base from '../../layouts/Base.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const notes = await getCollection('notes');
+  return notes.map((note) => ({ params: { slug: note.id }, props: { note } }));
+}
+
+const { note } = Astro.props;
+const { Content } = await render(note);
+---
+<Base title={note.data.title} description={note.data.subtitle} path="notes">
+
+  <header class="doc-head">
+    <div class="doc-meta">
+      <div>最後查證<br />{note.data.checked}</div>
+      <div>
+        <span class={`state state-${note.data.state}`}>
+          {note.data.state === 'checked' ? '已查證' : '待核對'}
+        </span>
+      </div>
+    </div>
+    <div>
+      <h1>{note.data.title}</h1>
+      {note.data.subtitle && <p class="doc-sub">{note.data.subtitle}</p>}
+    </div>
+  </header>
+
+  <article class="prose">
+    <Content />
+  </article>
+
+  {note.data.refs.length > 0 && (
+    <section class="disclaimer">
+      <p>本頁涉及之法規與標準：{note.data.refs.join('、')}</p>
+    </section>
+  )}
+
+</Base>

@@ -1,0 +1,48 @@
+---
+import Base from '../layouts/Base.astro';
+import { getCollection } from 'astro:content';
+
+const notes = (await getCollection('notes')).sort((a, b) => a.data.order - b.data.order);
+---
+<Base path="">
+
+  <section class="taxonomy" aria-label="火警探測器分類與其缺口">
+    <div class="tx-root">火警探測器　依感測原理分類</div>
+    <ul class="tx-list">
+      <li><span class="tx-name">感熱式</span><span class="tx-mech">探測器本體受熱動作</span></li>
+      <li><span class="tx-name">偵煙式</span><span class="tx-mech">煙粒子遮光或使空氣游離</span></li>
+      <li><span class="tx-name">火焰式</span><span class="tx-mech">火焰特徵光譜與閃爍頻率</span></li>
+    </ul>
+    <div class="tx-gap">
+      <span class="tx-name">無此分類</span>
+      <span class="tx-mech">熱影像　毫米波　影像辨識</span>
+    </div>
+    <p class="tx-caption">最後一列在現行分類中沒有對應項目。這些技術受另一套體系管轄，而那套體系管的是構造安全，不是偵測性能。</p>
+  </section>
+
+  <section class="lede">
+    <h1>兩套管制體系之間，有一類技術沒有位置。</h1>
+    <p>消防管偵測性能，但新型態的感測技術不在它的分類裡。工安管得到這些產品，但它只管設備會不會成為點火源，不管它偵測得準不準。</p>
+    <p>這裡記錄台灣災防技術的法規結構、認證路徑，以及它們之間的缺口。寫給需要判斷「這套系統到底能不能信」的人。</p>
+  </section>
+
+  <section class="entries" aria-label="筆記">
+    {notes.map((note) => (
+      <article class="entry">
+        <div class="entry-meta">
+          <div>{note.data.checked}</div>
+          <div>
+            <span class={`state state-${note.data.state}`}>
+              {note.data.state === 'checked' ? '已查證' : '待核對'}
+            </span>
+          </div>
+        </div>
+        <div>
+          <h2 class="entry-title"><a href={`/notes/${note.id}/`}>{note.data.title}</a></h2>
+          {note.data.subtitle && <p class="entry-sub">{note.data.subtitle}</p>}
+        </div>
+      </article>
+    ))}
+  </section>
+
+</Base>

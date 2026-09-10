@@ -1,0 +1,319 @@
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500;600&display=swap');
+
+:root {
+  /* 檢修報告書的紙與墨 */
+  --paper:      #F5F6F3;
+  --paper-2:    #FFFFFF;
+  --ink:        #20241F;
+  --muted:      #676C64;
+  --rule:       #DADDD6;
+  --rule-soft:  #E8EAE5;
+
+  /* 唯一的訊號色：檢修表上「合格」的綠。此站的核心是查證，不是火 */
+  --signal:      #1F5945;
+  --signal-weak: #E3EBE5;
+
+  --sans: "IBM Plex Sans", system-ui, -apple-system, "PingFang TC",
+          "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+  --mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+
+  /* 中文舒適行長約 34–38 字 */
+  --measure: 41rem;
+  --rail: 7.5rem;
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+html { -webkit-text-size-adjust: 100%; }
+
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: var(--sans);
+  font-size: 17px;
+  line-height: 1.95;
+  letter-spacing: 0.01em;
+  font-feature-settings: "palt" 1;
+}
+
+a {
+  color: var(--signal);
+  text-decoration-thickness: 1px;
+  text-underline-offset: 0.28em;
+}
+a:hover { text-decoration-thickness: 2px; }
+
+:focus-visible {
+  outline: 2px solid var(--signal);
+  outline-offset: 3px;
+}
+
+/* ---------- 版面骨架 ---------- */
+
+.wrap {
+  max-width: calc(var(--measure) + var(--rail) + 3rem);
+  margin: 0 auto;
+  padding: 0 1.5rem;
+}
+
+.masthead {
+  border-bottom: 1px solid var(--rule);
+  margin-bottom: 4rem;
+}
+.masthead-inner {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1.6rem 0;
+  flex-wrap: wrap;
+}
+.sitename {
+  font-weight: 600;
+  font-size: 1.02rem;
+  letter-spacing: 0.06em;
+  color: var(--ink);
+  text-decoration: none;
+}
+.sitename:hover { color: var(--signal); }
+.nav { display: flex; gap: 1.6rem; font-size: 0.9rem; }
+.nav a { color: var(--muted); text-decoration: none; }
+.nav a:hover, .nav a[aria-current="page"] { color: var(--signal); }
+
+.colophon {
+  border-top: 1px solid var(--rule);
+  margin-top: 6rem;
+  padding: 2rem 0 4rem;
+  font-size: 0.82rem;
+  line-height: 1.85;
+  color: var(--muted);
+}
+
+/* ---------- 分類樹（首頁主視覺） ---------- */
+
+.taxonomy {
+  margin: 0 0 3.5rem;
+  max-width: var(--measure);
+}
+.tx-root {
+  font-family: var(--mono);
+  font-size: 0.82rem;
+  color: var(--muted);
+  padding-bottom: 0.9rem;
+}
+.tx-list { list-style: none; margin: 0; padding: 0; border-left: 1px solid var(--rule); }
+.tx-list li {
+  display: grid;
+  grid-template-columns: 6.5rem 1fr;
+  gap: 0.5rem 1.25rem;
+  align-items: baseline;
+  padding: 0.62rem 0 0.62rem 1.4rem;
+  position: relative;
+}
+.tx-list li::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 1.42rem;
+  width: 0.9rem;
+  border-top: 1px solid var(--rule);
+}
+.tx-name { font-weight: 500; }
+.tx-mech { color: var(--muted); font-size: 0.92rem; }
+
+/* 縱線止於三個既有分類。缺口在樹之外，用虛線接回去 */
+.tx-gap {
+  display: grid;
+  grid-template-columns: 6.5rem 1fr;
+  gap: 0.5rem 1.25rem;
+  align-items: baseline;
+  padding: 0.62rem 0 0.62rem 1.4rem;
+  position: relative;
+  margin-top: 0.35rem;
+}
+.tx-gap::before {
+  content: "";
+  position: absolute;
+  left: 0; top: 1.42rem;
+  width: 0.9rem;
+  border-top: 1px dashed var(--signal);
+}
+.tx-gap .tx-name { color: var(--signal); font-weight: 500; }
+.tx-gap .tx-mech { color: var(--ink); }
+
+.tx-caption {
+  margin: 1.4rem 0 0;
+  max-width: 34rem;
+  font-size: 0.86rem;
+  color: var(--muted);
+}
+
+/* ---------- 首頁前言 ---------- */
+
+.lede {
+  max-width: var(--measure);
+  margin: 0 0 4.5rem;
+}
+.lede h1 {
+  font-size: 1.55rem;
+  font-weight: 600;
+  line-height: 1.7;
+  letter-spacing: 0.005em;
+  margin: 0 0 1.2rem;
+}
+.lede p { margin: 0 0 1rem; color: var(--muted); }
+
+/* ---------- 條目列表 ---------- */
+
+.entries { border-top: 1px solid var(--rule); }
+.entry {
+  display: grid;
+  grid-template-columns: var(--rail) 1fr;
+  gap: 2rem;
+  padding: 1.9rem 0;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.entry-meta {
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  line-height: 1.9;
+  color: var(--muted);
+  padding-top: 0.42rem;
+}
+.entry-title {
+  margin: 0 0 0.35rem;
+  font-size: 1.12rem;
+  font-weight: 600;
+  line-height: 1.6;
+}
+.entry-title a { color: var(--ink); text-decoration: none; }
+.entry-title a:hover { color: var(--signal); text-decoration: underline; text-underline-offset: 0.28em; }
+.entry-sub { margin: 0; color: var(--muted); font-size: 0.95rem; }
+
+/* 查證狀態：本站唯一使用訊號色的資訊 */
+.state {
+  display: inline-block;
+  font-family: var(--mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.02em;
+  padding: 0.1rem 0.42rem;
+  border-radius: 2px;
+}
+.state-checked { background: var(--signal-weak); color: var(--signal); }
+.state-draft   { background: #ECEDEA; color: var(--muted); }
+
+/* ---------- 文章頁 ---------- */
+
+.doc-head {
+  display: grid;
+  grid-template-columns: var(--rail) 1fr;
+  gap: 2rem;
+  padding-bottom: 2.2rem;
+  margin-bottom: 3rem;
+  border-bottom: 1px solid var(--rule);
+}
+.doc-meta {
+  font-family: var(--mono);
+  font-size: 0.74rem;
+  line-height: 2.1;
+  color: var(--muted);
+  padding-top: 0.5rem;
+}
+.doc-meta div + div { margin-top: 0.5rem; }
+.doc-head h1 {
+  margin: 0 0 0.6rem;
+  font-size: 1.72rem;
+  font-weight: 600;
+  line-height: 1.55;
+}
+.doc-sub { margin: 0; color: var(--muted); font-size: 1rem; line-height: 1.8; }
+
+.prose { max-width: var(--measure); }
+.prose h2 {
+  margin: 3.4rem 0 1.1rem;
+  font-size: 1.16rem;
+  font-weight: 600;
+  line-height: 1.65;
+  padding-bottom: 0.55rem;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.prose h3 {
+  margin: 2.4rem 0 0.8rem;
+  font-size: 1rem;
+  font-weight: 600;
+  color: var(--ink);
+}
+.prose p { margin: 0 0 1.35rem; }
+.prose strong { font-weight: 600; }
+.prose ul, .prose ol { margin: 0 0 1.35rem; padding-left: 1.4rem; }
+.prose li { margin-bottom: 0.5rem; }
+.prose li::marker { color: var(--muted); }
+
+.prose blockquote {
+  margin: 1.6rem 0;
+  padding: 0.2rem 0 0.2rem 1.4rem;
+  border-left: 2px solid var(--rule);
+  color: var(--ink);
+}
+.prose blockquote p:last-child { margin-bottom: 0; }
+
+.prose code {
+  font-family: var(--mono);
+  font-size: 0.88em;
+  background: var(--paper-2);
+  border: 1px solid var(--rule-soft);
+  border-radius: 2px;
+  padding: 0.08em 0.34em;
+}
+
+.prose table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.8rem 0;
+  font-size: 0.94rem;
+  line-height: 1.75;
+}
+.prose th, .prose td {
+  text-align: left;
+  vertical-align: top;
+  padding: 0.72rem 0.9rem 0.72rem 0;
+  border-bottom: 1px solid var(--rule-soft);
+}
+.prose th {
+  font-weight: 600;
+  border-bottom: 1px solid var(--rule);
+  white-space: nowrap;
+}
+
+.prose hr {
+  border: 0;
+  border-top: 1px solid var(--rule);
+  margin: 3.2rem 0;
+}
+
+.prose em { font-style: normal; color: var(--muted); font-size: 0.92em; }
+
+.disclaimer {
+  margin-top: 4rem;
+  padding-top: 1.6rem;
+  border-top: 1px solid var(--rule);
+  font-size: 0.82rem;
+  line-height: 1.85;
+  color: var(--muted);
+  max-width: var(--measure);
+}
+
+/* ---------- 響應式 ---------- */
+
+@media (max-width: 46rem) {
+  body { font-size: 16px; line-height: 1.9; }
+  .entry, .doc-head { grid-template-columns: 1fr; gap: 0.7rem; }
+  .entry-meta, .doc-meta { padding-top: 0; display: flex; gap: 0.9rem; flex-wrap: wrap; }
+  .doc-meta div + div { margin-top: 0; }
+  .tx-list li { grid-template-columns: 1fr; gap: 0.15rem; }
+  .masthead { margin-bottom: 2.5rem; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  * { animation: none !important; transition: none !important; }
+}

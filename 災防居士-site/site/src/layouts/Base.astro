@@ -1,0 +1,46 @@
+---
+import '../styles/global.css';
+
+const { title, description, path = '' } = Astro.props;
+const siteName = '災防居士';
+const fullTitle = title ? `${title}｜${siteName}` : `${siteName}－台灣災防技術的法規與認證筆記`;
+---
+<!doctype html>
+<html lang="zh-Hant-TW">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{fullTitle}</title>
+  <meta name="description" content={description ?? '記錄台灣災防技術的法規結構、認證路徑與缺口。'} />
+  <meta property="og:title" content={fullTitle} />
+  <meta property="og:description" content={description ?? '記錄台灣災防技術的法規結構、認證路徑與缺口。'} />
+  <meta property="og:type" content="website" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+</head>
+<body>
+  <header class="masthead">
+    <div class="wrap masthead-inner">
+      <a class="sitename" href="/">災防居士</a>
+      <nav class="nav">
+        <a href="/" aria-current={path === '' ? 'page' : undefined}>筆記</a>
+        <a href="/about/" aria-current={path === 'about' ? 'page' : undefined}>關於</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="wrap">
+    <slot />
+  </main>
+
+  <footer class="colophon">
+    <div class="wrap">
+      <p>
+        本站內容為公開法規、公開規格與公開報導之整理與分析。實際適用請以主管機關公告之現行法令為準；
+        個案認定建議洽詢消防主管機關或執業消防設備師（士）。
+      </p>
+      <p>每一頁標示最後查證日期。法規變動時修訂該頁，不另發新文。</p>
+    </div>
+  </footer>
+</body>
+</html>
